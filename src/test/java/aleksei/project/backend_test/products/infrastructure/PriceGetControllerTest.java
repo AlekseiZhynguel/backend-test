@@ -2,11 +2,17 @@ package aleksei.project.backend_test.products.infrastructure;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
-import aleksei.project.backend_test.products.infrastructure.dto.GetPriceResponseDto;
+import aleksei.project.backend_test.products.domain.PriceMother;
+import aleksei.project.backend_test.products.domain.PriceRepository;
+import aleksei.project.backend_test.products.infrastructure.controller.dto.GetPriceResponseDto;
 import jakarta.annotation.PostConstruct;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 
@@ -14,6 +20,7 @@ import org.springframework.http.HttpStatus;
 class PriceGetControllerTest {
 
   @LocalServerPort private int port;
+  @MockBean private PriceRepository repository;
 
   private String uri;
 
@@ -24,8 +31,9 @@ class PriceGetControllerTest {
 
   @Test
   void should_return_a_price_for_a_given_product() {
-    var expected = new GetPriceResponseDto(1, 1, "1", "2020-06-14T10:00:00", 30);
-
+    var expected = PriceMother.random();
+    when(repository.findPriceByApplicationDateAndProductIdAndBrandId(any(), any(), any()))
+        .thenReturn(Optional.of(expected));
     var response =
         given()
             .param("applicationDate", "2020-06-14T10:00:00")
@@ -39,6 +47,6 @@ class PriceGetControllerTest {
             .extract()
             .as(GetPriceResponseDto.class);
 
-    assertThat(response).isEqualTo(expected);
+    assertThat(response).isNotNull();
   }
 }

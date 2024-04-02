@@ -1,19 +1,24 @@
 package aleksei.project.backend_test.products.application;
 
-import aleksei.project.backend_test.products.domain.ApplicationDate;
-import aleksei.project.backend_test.products.domain.BrandId;
-import aleksei.project.backend_test.products.domain.ProductId;
-import aleksei.project.backend_test.products.infrastructure.dto.GetProductRequestDto;
+import aleksei.project.backend_test.products.domain.*;
+import aleksei.project.backend_test.products.domain.exceptions.PriceNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ListPrices {
 
-  public Object execute(GetProductRequestDto request) {
-    ApplicationDate date = new ApplicationDate(request.applicationDate());
-    ProductId productId = new ProductId(request.productId());
-    BrandId brandId = new BrandId(request.brandId());
+  private final PriceRepository repository;
 
-    return null;
+  public ListPrices(PriceRepository repository) {
+    this.repository = repository;
+  }
+
+  public Price execute(PriceRequest request) {
+
+    return repository
+        .findPriceByApplicationDateAndProductIdAndBrandId(
+            request.applicationDate(), request.productId(), request.brandId())
+        .orElseThrow(
+            () -> new PriceNotFoundException("price_not_found", "Could not find any price"));
   }
 }
