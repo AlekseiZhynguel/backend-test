@@ -24,11 +24,11 @@ class PriceGetControllerTest {
 
   @Test
   void should_return_a_price_for_a_given_product() {
-    var expected = new GetPriceResponseDto(1, 1, "1", "2020-06-14-00.00.00", 30);
+    var expected = new GetPriceResponseDto(1, 1, "1", "2020-06-14T10:00:00", 30);
 
     var response =
         given()
-            .param("applicationDate", "2020-06-14-00.00.00")
+            .param("applicationDate", "2020-06-14T10:00:00")
             .param("productId", 1)
             .param("brandId", 1)
             .when()
