@@ -1,15 +1,13 @@
 package aleksei.project.backend_test.prices.infrastructure.controller;
 
 import aleksei.project.backend_test.prices.application.ListPrices;
-import aleksei.project.backend_test.prices.domain.ApplicationDate;
-import aleksei.project.backend_test.prices.domain.BrandId;
-import aleksei.project.backend_test.prices.domain.PriceRequest;
-import aleksei.project.backend_test.prices.domain.ProductId;
+import aleksei.project.backend_test.prices.domain.*;
 import aleksei.project.backend_test.prices.infrastructure.controller.dto.GetPriceRequestDto;
 import aleksei.project.backend_test.prices.infrastructure.controller.dto.GetPriceResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
-import org.springdoc.api.annotations.ParameterObject;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,22 +22,30 @@ public class PriceGetController {
 
   @Operation(summary = "Retrieve price for a given product")
   @GetMapping("/prices")
-  @ResponseStatus(HttpStatus.OK)
-  GetPriceResponseDto getPrice(@ParameterObject GetPriceRequestDto requestDto) {
-    PriceRequest request =
-        new PriceRequest(
-            new ApplicationDate(requestDto.applicationDate()),
-            new ProductId(requestDto.productId()),
-            new BrandId(requestDto.brandId()));
+  ResponseEntity<?> getPrice(@ParameterObject GetPriceRequestDto requestDto) {
+    PriceRequest request = request(requestDto);
 
-    var result = useCase.execute(request);
+    return useCase
+        .execute(request)
+        .fold(
+            error -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(error),
+            price -> ResponseEntity.ok(responseDto(price)));
+  }
 
+  private PriceRequest request(GetPriceRequestDto requestDto) {
+    return new PriceRequest(
+        new ApplicationDate(requestDto.applicationDate()),
+        new ProductId(requestDto.productId()),
+        new BrandId(requestDto.brandId()));
+  }
+
+  private GetPriceResponseDto responseDto(Price price) {
     return new GetPriceResponseDto(
-        result.productId().value(),
-        result.brandId().value(),
-        result.priceList().value(),
-        result.startDate().value(),
-        result.endDate().value(),
-        result.amount().value());
+        price.productId().value(),
+        price.brandId().value(),
+        price.priceList().value(),
+        price.startDate().value(),
+        price.endDate().value(),
+        price.amount().value());
   }
 }

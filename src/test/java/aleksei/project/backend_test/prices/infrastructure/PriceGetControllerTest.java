@@ -4,11 +4,13 @@ import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
+import aleksei.project.backend_test.prices.domain.PriceNotFound;
 import aleksei.project.backend_test.prices.infrastructure.controller.dto.GetPriceRequestDto;
 import aleksei.project.backend_test.prices.infrastructure.controller.dto.GetPriceResponseDto;
 import aleksei.project.backend_test.shared.infrastructure.AcceptanceTestWithTestContainers;
 import jakarta.annotation.PostConstruct;
 import java.util.stream.Stream;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -50,7 +52,7 @@ class PriceGetControllerTest extends AcceptanceTestWithTestContainers {
   @ParameterizedTest
   @MethodSource("requestsToValidate")
   void should_return_a_price_for_a_given_product(
-      GetPriceRequestDto request, GetPriceResponseDto expectedResponse) {
+      GetPriceRequestDto request, GetPriceResponseDto expected) {
     var response =
         given()
             .param("applicationDate", request.applicationDate())
@@ -64,6 +66,26 @@ class PriceGetControllerTest extends AcceptanceTestWithTestContainers {
             .extract()
             .as(GetPriceResponseDto.class);
 
-    assertThat(response).usingRecursiveComparison().isEqualTo(expectedResponse);
+    assertThat(response).usingRecursiveComparison().isEqualTo(expected);
+  }
+
+  @Test
+  void should_return_a_response_for_a_non_existing_product() {
+    var expected = new PriceNotFound("2300-06-16T21:00:00", 1, 1);
+
+    var response =
+        given()
+            .param("applicationDate", expected.applicationDate())
+            .param("productId", expected.productId())
+            .param("brandId", expected.brandId())
+            .when()
+            .get(uri + "/prices")
+            .then()
+            .assertThat()
+            .statusCode(HttpStatus.NOT_FOUND.value())
+            .extract()
+            .as(PriceNotFound.class);
+
+    assertThat(response).usingRecursiveComparison().isEqualTo(expected);
   }
 }

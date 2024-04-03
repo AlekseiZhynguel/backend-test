@@ -6,7 +6,7 @@ CREATE TABLE prices
     brand_id   INT,
     start_date DATETIME,
     end_date   DATETIME,
-    price_list    INT,
+    price_list INT,
     product_id INT,
     priority   INT,
     price      DECIMAL(10, 2),
