@@ -1,6 +1,6 @@
 package aleksei.project.backend_test.prices.domain;
 
-import aleksei.project.backend_test.prices.domain.ecommerce.tables.records.PricesRecord;
+import aleksei.project.backend_test.prices.domain.jooq.ecommerce.tables.records.PricesRecord;
 import aleksei.project.backend_test.prices.domain.primitives.PricePrimitives;
 
 public record Price(

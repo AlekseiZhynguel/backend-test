@@ -4,3 +4,7 @@ init:
 	@docker-compose up -d --wait
 	@echo "Database initialized!!"
 	@mvn generate-sources
+
+.PHONY: run
+run:
+	mvn spring-boot:run

@@ -1,6 +1,7 @@
 package aleksei.project.backend_test.prices.infrastructure.persistence.repository.mysql;
 
-import static aleksei.project.backend_test.prices.domain.ecommerce.tables.Prices.PRICES;
+
+import static aleksei.project.backend_test.prices.domain.jooq.ecommerce.tables.Prices.PRICES;
 
 import aleksei.project.backend_test.prices.domain.*;
 import java.time.LocalDateTime;
