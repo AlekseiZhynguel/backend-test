@@ -11,5 +11,10 @@ services:
       MYSQL_DATABASE: ecommerce
       MYSQL_USER: user
       MYSQL_PASSWORD: pass
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      interval: 3s
+      timeout: 5s
+      retries: 5
     volumes:
       - ./src/main/resources/init-db.sql:/docker-entrypoint-initdb.d/init.sql

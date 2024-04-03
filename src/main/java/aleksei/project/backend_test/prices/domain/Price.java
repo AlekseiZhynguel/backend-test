@@ -55,7 +55,7 @@ public class Price {
         new BrandId(pricesRecord.getBrandId()),
         new ApplicationDate(pricesRecord.getStartDate().toString()),
         new ApplicationDate(pricesRecord.getEndDate().toString()),
-        new PriceList(pricesRecord.getRateId()),
+        new PriceList(pricesRecord.getPriceList()),
         new ProductId(pricesRecord.getProductId()),
         new Priority(pricesRecord.getPriority()),
         new Amount(pricesRecord.getPrice().doubleValue()),
