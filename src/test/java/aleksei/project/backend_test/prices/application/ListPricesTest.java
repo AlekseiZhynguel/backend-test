@@ -8,7 +8,7 @@ import aleksei.project.backend_test.prices.domain.PriceRequest;
 import aleksei.project.backend_test.prices.domain.ProductId;
 import aleksei.project.backend_test.prices.domain.exceptions.InvalidDateException;
 import aleksei.project.backend_test.prices.domain.exceptions.PriceNotFoundException;
-import aleksei.project.backend_test.prices.infrastructure.persistence.repository.InMemoryPriceRepository;
+import aleksei.project.backend_test.prices.infrastructure.persistence.repository.memory.InMemoryPriceRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
@@ -55,7 +55,7 @@ class ListPricesTest {
   }
 
   @ParameterizedTest
-  @CsvFileSource(resources = "/price_test_data.csv")
+  @CsvFileSource(resources = "/invalid_ids.csv")
   void should_throw_an_exception_when_product_is_or_brand_id_are_not_valid(
       String date, int productId, int brandId) {
     var repository = InMemoryPriceRepository.withSomePrices();

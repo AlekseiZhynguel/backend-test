@@ -1,5 +1,6 @@
 package aleksei.project.backend_test.prices.domain;
 
+import aleksei.project.backend_test.prices.domain.ecommerce.tables.records.PricesRecord;
 import aleksei.project.backend_test.prices.domain.primitives.PricePrimitives;
 
 public class Price {
@@ -46,6 +47,19 @@ public class Price {
         new Priority(primitives.priority()),
         new Amount(primitives.price()),
         new Currency(primitives.currency()));
+  }
+
+  public static Price fromRecord(PricesRecord pricesRecord) {
+    return new Price(
+        new PriceId(pricesRecord.getId()),
+        new BrandId(pricesRecord.getBrandId()),
+        new ApplicationDate(pricesRecord.getStartDate().toString()),
+        new ApplicationDate(pricesRecord.getEndDate().toString()),
+        new PriceList(pricesRecord.getRateId()),
+        new ProductId(pricesRecord.getProductId()),
+        new Priority(pricesRecord.getPriority()),
+        new Amount(pricesRecord.getPrice().doubleValue()),
+        new Currency(pricesRecord.getCurrency()));
   }
 
   public PriceId id() {

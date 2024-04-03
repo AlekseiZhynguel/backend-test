@@ -4,21 +4,21 @@ import aleksei.project.backend_test.prices.domain.exceptions.InvalidDateExceptio
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public record ApplicationDate(String date) {
+public record ApplicationDate(String value) {
   public ApplicationDate {
-    ensureIsValidDate(date);
+    ensureIsValidDate(value);
   }
 
-  private void ensureIsValidDate(String date) {
+  private void ensureIsValidDate(String value) {
     try {
-      LocalDateTime.parse(date, DateTimeFormatter.ISO_DATE_TIME);
+      LocalDateTime.parse(value, DateTimeFormatter.ISO_DATE_TIME);
     } catch (Exception exception) {
-      throw new InvalidDateException(date);
+      throw new InvalidDateException(value);
     }
   }
 
   public boolean isInDateRange(String startDate, String endDate) {
-    LocalDateTime thisDateTime = parseDateTime(this.date);
+    LocalDateTime thisDateTime = parseDateTime(this.value);
     LocalDateTime otherStartDate = parseDateTime(startDate);
     LocalDateTime otherEndDate = parseDateTime(endDate);
 

@@ -5,8 +5,8 @@ import aleksei.project.backend_test.prices.domain.ApplicationDate;
 import aleksei.project.backend_test.prices.domain.BrandId;
 import aleksei.project.backend_test.prices.domain.PriceRequest;
 import aleksei.project.backend_test.prices.domain.ProductId;
+import aleksei.project.backend_test.prices.infrastructure.controller.dto.GetPriceRequestDto;
 import aleksei.project.backend_test.prices.infrastructure.controller.dto.GetPriceResponseDto;
-import aleksei.project.backend_test.prices.infrastructure.controller.dto.GetProductRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
@@ -25,7 +25,7 @@ public class PriceGetController {
   @Operation(summary = "Retrieve price for a given product")
   @GetMapping("/prices")
   @ResponseStatus(HttpStatus.OK)
-  GetPriceResponseDto getPrice(@ParameterObject GetProductRequestDto requestDto) {
+  GetPriceResponseDto getPrice(@ParameterObject GetPriceRequestDto requestDto) {
     PriceRequest request =
         new PriceRequest(
             new ApplicationDate(requestDto.applicationDate()),
@@ -38,8 +38,8 @@ public class PriceGetController {
         result.productId().value(),
         result.brandId().value(),
         result.priceList().value(),
-        result.startDate().date(),
-        result.endDate().date(),
+        result.startDate().value(),
+        result.endDate().value(),
         result.amount().value());
   }
 }

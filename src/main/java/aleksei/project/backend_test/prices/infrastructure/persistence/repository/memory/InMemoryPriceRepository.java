@@ -1,4 +1,4 @@
-package aleksei.project.backend_test.prices.infrastructure.persistence.repository;
+package aleksei.project.backend_test.prices.infrastructure.persistence.repository.memory;
 
 import aleksei.project.backend_test.prices.domain.ApplicationDate;
 import aleksei.project.backend_test.prices.domain.BrandId;

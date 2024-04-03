@@ -2,43 +2,60 @@ package aleksei.project.backend_test.prices.infrastructure;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
-import aleksei.project.backend_test.prices.domain.PriceMother;
-import aleksei.project.backend_test.prices.domain.PriceRepository;
+import aleksei.project.backend_test.prices.infrastructure.controller.dto.GetPriceRequestDto;
 import aleksei.project.backend_test.prices.infrastructure.controller.dto.GetPriceResponseDto;
+import aleksei.project.backend_test.shared.infrastructure.AcceptanceTestWithTestContainers;
 import jakarta.annotation.PostConstruct;
-import java.util.Optional;
-import org.junit.jupiter.api.Test;
+import java.util.stream.Stream;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class PriceGetControllerTest {
+class PriceGetControllerTest extends AcceptanceTestWithTestContainers {
 
   @LocalServerPort private int port;
-  @MockBean private PriceRepository repository;
-
   private String uri;
 
+  private static Stream<Arguments> requestsToValidate() {
+    return Stream.of(
+        arguments(
+            new GetPriceRequestDto("2020-06-14T10:00:00", 35455, 1),
+            new GetPriceResponseDto(35455, 1, 1, "2020-06-14T00:00", "2020-12-31T23:59:59", 35.5)),
+        arguments(
+            new GetPriceRequestDto("2020-06-14T16:00:00", 35455, 1),
+            new GetPriceResponseDto(35455, 1, 2, "2020-06-14T15:00", "2020-06-14T18:30", 25.45)),
+        arguments(
+            new GetPriceRequestDto("2020-06-14T21:00:00", 35455, 1),
+            new GetPriceResponseDto(35455, 1, 1, "2020-06-14T00:00", "2020-12-31T23:59:59", 35.5)),
+        arguments(
+            new GetPriceRequestDto("2020-06-15T10:00:00", 35455, 1),
+            new GetPriceResponseDto(35455, 1, 3, "2020-06-15T00:00", "2020-06-15T11:00", 30.5)),
+        arguments(
+            new GetPriceRequestDto("2020-06-16T21:00:00", 35455, 1),
+            new GetPriceResponseDto(
+                35455, 1, 4, "2020-06-15T16:00", "2020-12-31T23:59:59", 38.95)));
+  }
+
   @PostConstruct
-  public void init() {
+  private void init() {
     uri = "http://localhost:" + port + "/api/v1";
   }
 
-  @Test
-  void should_return_a_price_for_a_given_product() {
-    var expected = PriceMother.random();
-    when(repository.findPriceByApplicationDateAndProductIdAndBrandId(any(), any(), any()))
-        .thenReturn(Optional.of(expected));
+  @ParameterizedTest
+  @MethodSource("requestsToValidate")
+  void should_return_a_price_for_a_given_product(
+      GetPriceRequestDto request, GetPriceResponseDto expectedResponse) {
     var response =
         given()
-            .param("applicationDate", "2020-06-14T10:00:00")
-            .param("productId", 1)
-            .param("brandId", 1)
+            .param("applicationDate", request.applicationDate())
+            .param("productId", request.productId())
+            .param("brandId", request.brandId())
             .when()
             .get(uri + "/prices")
             .then()
@@ -47,6 +64,6 @@ class PriceGetControllerTest {
             .extract()
             .as(GetPriceResponseDto.class);
 
-    assertThat(response).isNotNull();
+    assertThat(response).usingRecursiveComparison().isEqualTo(expectedResponse);
   }
 }
