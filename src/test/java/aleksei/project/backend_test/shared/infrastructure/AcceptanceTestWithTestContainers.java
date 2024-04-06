@@ -14,7 +14,7 @@ public abstract class AcceptanceTestWithTestContainers {
 
   static {
     MYSQL =
-        new MySQLContainer<>(DockerImageName.parse("mysql:oraclelinux8"))
+        new MySQLContainer<>(DockerImageName.parse("mysql:8.0-oraclelinux8"))
             .withUsername("user")
             .withPassword("pass")
             .withInitScript("init-db.sql")
