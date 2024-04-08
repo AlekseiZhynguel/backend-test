@@ -5,11 +5,11 @@ import io.vavr.control.Either;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ListPrices {
+public class PriceSearcher {
 
   private final PriceRepository repository;
 
-  public ListPrices(PriceRepository repository) {
+  public PriceSearcher(PriceRepository repository) {
     this.repository = repository;
   }
 

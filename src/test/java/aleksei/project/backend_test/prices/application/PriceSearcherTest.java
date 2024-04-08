@@ -10,12 +10,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
-class ListPricesTest {
+class PriceSearcherTest {
 
   @Test
   void should_return_a_valid_price_for_an_existing_product() {
     var repository = InMemoryPriceRepository.withSomePrice();
-    var useCase = new ListPrices(repository);
+    var useCase = new PriceSearcher(repository);
     var expected = PriceMother.random();
     var request =
         new PriceRequest(
@@ -29,7 +29,7 @@ class ListPricesTest {
   @Test
   void should_return_a_response_when_could_not_find_price() {
     var repository = InMemoryPriceRepository.empty();
-    var useCase = new ListPrices(repository);
+    var useCase = new PriceSearcher(repository);
     var request =
         new PriceRequest(
             new ApplicationDate("2020-08-14T10:00:00"), new ProductId(1), new BrandId(1));

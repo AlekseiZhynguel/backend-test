@@ -1,6 +1,6 @@
 package aleksei.project.backend_test.prices.infrastructure.controller;
 
-import aleksei.project.backend_test.prices.application.ListPrices;
+import aleksei.project.backend_test.prices.application.PriceSearcher;
 import aleksei.project.backend_test.prices.domain.*;
 import aleksei.project.backend_test.prices.infrastructure.controller.dto.GetPriceRequestDto;
 import aleksei.project.backend_test.prices.infrastructure.controller.dto.GetPriceResponseDto;
@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1")
 public class PriceGetController {
 
-  private final ListPrices useCase;
+  private final PriceSearcher useCase;
 
-  public PriceGetController(ListPrices useCase) {
+  public PriceGetController(PriceSearcher useCase) {
     this.useCase = useCase;
   }
 
@@ -24,7 +24,6 @@ public class PriceGetController {
   @GetMapping("/prices")
   ResponseEntity<?> getPrice(@ParameterObject GetPriceRequestDto requestDto) {
     PriceRequest request = request(requestDto);
-
     return useCase
         .execute(request)
         .fold(

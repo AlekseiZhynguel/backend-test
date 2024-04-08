@@ -17,10 +17,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("test")
 class PriceGetControllerTest extends AcceptanceTestWithTestContainers {
 
   @LocalServerPort private int port;
@@ -73,7 +71,9 @@ class PriceGetControllerTest extends AcceptanceTestWithTestContainers {
 
   @Test
   void should_return_a_response_for_a_non_existing_product() {
-    var request = new PriceRequest(new ApplicationDate("2300-06-16T21:00:00"), new ProductId(1), new BrandId(1));
+    var request =
+        new PriceRequest(
+            new ApplicationDate("2300-06-16T21:00:00"), new ProductId(1), new BrandId(1));
     var expected = PriceNotFound.fromRequest(request);
 
     var response =
