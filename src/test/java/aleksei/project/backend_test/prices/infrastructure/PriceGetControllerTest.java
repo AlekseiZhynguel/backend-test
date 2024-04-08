@@ -4,7 +4,7 @@ import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
-import aleksei.project.backend_test.prices.domain.PriceNotFound;
+import aleksei.project.backend_test.prices.domain.*;
 import aleksei.project.backend_test.prices.infrastructure.controller.dto.GetPriceRequestDto;
 import aleksei.project.backend_test.prices.infrastructure.controller.dto.GetPriceResponseDto;
 import aleksei.project.backend_test.shared.infrastructure.AcceptanceTestWithTestContainers;
@@ -73,13 +73,14 @@ class PriceGetControllerTest extends AcceptanceTestWithTestContainers {
 
   @Test
   void should_return_a_response_for_a_non_existing_product() {
-    var expected = new PriceNotFound("2300-06-16T21:00:00", 1, 1);
+    var request = new PriceRequest(new ApplicationDate("2300-06-16T21:00:00"), new ProductId(1), new BrandId(1));
+    var expected = PriceNotFound.fromRequest(request);
 
     var response =
         given()
-            .param("applicationDate", expected.applicationDate())
-            .param("productId", expected.productId())
-            .param("brandId", expected.brandId())
+            .param("applicationDate", request.applicationDate().value())
+            .param("productId", request.productId().value())
+            .param("brandId", request.brandId().value())
             .when()
             .get(uri + "/prices")
             .then()

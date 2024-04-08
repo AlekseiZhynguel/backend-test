@@ -19,12 +19,6 @@ public class ListPrices {
         .findPriceByApplicationDateAndProductIdAndBrandId(
             request.applicationDate(), request.productId(), request.brandId())
         .<Either<PriceNotFound, Price>>map(Either::right)
-        .orElseGet(
-            () ->
-                Either.left(
-                    new PriceNotFound(
-                        request.applicationDate().value(),
-                        request.productId().value(),
-                        request.brandId().value())));
+        .orElseGet(() -> Either.left(PriceNotFound.fromRequest(request)));
   }
 }

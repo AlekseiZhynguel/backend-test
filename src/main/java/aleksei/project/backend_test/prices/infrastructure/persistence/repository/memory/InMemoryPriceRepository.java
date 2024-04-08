@@ -21,7 +21,7 @@ public class InMemoryPriceRepository implements PriceRepository {
 
   private final Map<String, PricePrimitives> prices = new HashMap<>();
 
-  public static InMemoryPriceRepository withSomePrices() {
+  public static InMemoryPriceRepository withSomePrice() {
     var repository = new InMemoryPriceRepository();
 
     repository.prices.put(price.id(), price);

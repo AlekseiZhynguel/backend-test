@@ -14,7 +14,7 @@ class ListPricesTest {
 
   @Test
   void should_return_a_valid_price_for_an_existing_product() {
-    var repository = InMemoryPriceRepository.withSomePrices();
+    var repository = InMemoryPriceRepository.withSomePrice();
     var useCase = new ListPrices(repository);
     var expected = PriceMother.random();
     var request =
@@ -30,10 +30,10 @@ class ListPricesTest {
   void should_return_a_response_when_could_not_find_price() {
     var repository = InMemoryPriceRepository.empty();
     var useCase = new ListPrices(repository);
-    var expected = new PriceNotFound("2020-08-14T10:00:00", 1, 1);
     var request =
         new PriceRequest(
             new ApplicationDate("2020-08-14T10:00:00"), new ProductId(1), new BrandId(1));
+    var expected = PriceNotFound.fromRequest(request);
 
     var result = useCase.execute(request);
 
