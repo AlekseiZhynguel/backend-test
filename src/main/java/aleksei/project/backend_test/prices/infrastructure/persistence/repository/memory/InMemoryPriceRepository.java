@@ -3,7 +3,7 @@ package aleksei.project.backend_test.prices.infrastructure.persistence.repositor
 import aleksei.project.backend_test.prices.domain.ApplicationDate;
 import aleksei.project.backend_test.prices.domain.BrandId;
 import aleksei.project.backend_test.prices.domain.Price;
-import aleksei.project.backend_test.prices.domain.PriceRepository;
+import aleksei.project.backend_test.prices.domain.repositories.PriceRepository;
 import aleksei.project.backend_test.prices.domain.ProductId;
 import aleksei.project.backend_test.prices.domain.primitives.PricePrimitives;
 import java.util.Comparator;

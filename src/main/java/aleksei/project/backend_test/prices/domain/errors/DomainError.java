@@ -1,4 +1,4 @@
-package aleksei.project.backend_test.shared.domain;
+package aleksei.project.backend_test.prices.domain.errors;
 
 public abstract class DomainError extends RuntimeException {
   private final String errorCode;

@@ -4,7 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 import aleksei.project.backend_test.prices.domain.*;
-import aleksei.project.backend_test.prices.domain.exceptions.InvalidDateException;
+import aleksei.project.backend_test.prices.domain.errors.InvalidDateException;
+import aleksei.project.backend_test.prices.domain.errors.PriceNotFound;
+import aleksei.project.backend_test.prices.domain.request.PriceRequest;
 import aleksei.project.backend_test.prices.infrastructure.persistence.repository.memory.InMemoryPriceRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

@@ -1,6 +1,6 @@
 package aleksei.project.backend_test.prices.domain;
 
-import aleksei.project.backend_test.prices.domain.exceptions.InvalidDateException;
+import aleksei.project.backend_test.prices.domain.errors.InvalidDateException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 

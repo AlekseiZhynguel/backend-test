@@ -1,6 +1,4 @@
-package aleksei.project.backend_test.prices.domain.exceptions;
-
-import aleksei.project.backend_test.shared.domain.DomainError;
+package aleksei.project.backend_test.prices.domain.errors;
 
 public class InvalidDateException extends DomainError {
   public InvalidDateException(String date) {

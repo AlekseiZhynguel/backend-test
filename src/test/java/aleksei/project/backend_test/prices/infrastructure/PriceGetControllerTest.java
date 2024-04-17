@@ -5,6 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 import aleksei.project.backend_test.prices.domain.*;
+import aleksei.project.backend_test.prices.domain.errors.PriceNotFound;
+import aleksei.project.backend_test.prices.domain.request.PriceRequest;
 import aleksei.project.backend_test.prices.infrastructure.controller.dto.GetPriceRequestDto;
 import aleksei.project.backend_test.prices.infrastructure.controller.dto.GetPriceResponseDto;
 import aleksei.project.backend_test.shared.infrastructure.AcceptanceTestWithTestContainers;

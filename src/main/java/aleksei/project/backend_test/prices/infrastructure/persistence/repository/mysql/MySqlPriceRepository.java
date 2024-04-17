@@ -6,6 +6,8 @@ import static aleksei.project.backend_test.prices.domain.jooq.ecommerce.tables.P
 import aleksei.project.backend_test.prices.domain.*;
 import java.time.LocalDateTime;
 import java.util.Optional;
+
+import aleksei.project.backend_test.prices.domain.repositories.PriceRepository;
 import org.jooq.DSLContext;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
